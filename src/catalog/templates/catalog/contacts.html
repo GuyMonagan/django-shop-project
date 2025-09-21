@@ -1,0 +1,26 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+  <h1>Контакты</h1>
+
+  {% if success %}
+    <div class="alert alert-success">Спасибо! Сообщение отправлено.</div>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.name.label_tag }}
+      {{ form.name }}
+    </div>
+    <div class="mb-3">
+      {{ form.email.label_tag }}
+      {{ form.email }}
+    </div>
+    <div class="mb-3">
+      {{ form.message.label_tag }}
+      {{ form.message }}
+    </div>
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+{% endblock %}
