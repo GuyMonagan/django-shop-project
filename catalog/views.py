@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from .forms import ContactForm
+from .models import Product, ContactData
 
-def home_view(request):
-    return render(request, "catalog/home.html")
+def home(request):
+    latest_products = Product.objects.order_by('-created_at')[:5]
+    return render(request, 'catalog/home.html', {'latest_products': latest_products})
 
 def contacts_view(request):
     success = False
@@ -10,11 +12,16 @@ def contacts_view(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Здесь можно было бы обработать данные формы
             print("Данные формы:", form.cleaned_data)
             success = True
             form = ContactForm()  # очищаем форму
     else:
         form = ContactForm()
 
-    return render(request, "catalog/contacts.html", {"form": form, "success": success})
+    contacts = ContactData.objects.all()
+
+    return render(request, "catalog/contacts.html", {
+        "form": form,
+        "success": success,
+        "contacts": contacts,
+    })

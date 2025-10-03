@@ -5,4 +5,13 @@
 {% block content %}
 <h1>Главная страница</h1>
 <p>Добро пожаловать!</p>
+
+<h2>Последние товары:</h2>
+<ul>
+  {% for product in latest_products %}
+    <li>{{ product.name }} – {{ product.price }} ₽</li>
+  {% empty %}
+    <li>Нет доступных товаров.</li>
+  {% endfor %}
+</ul>
 {% endblock %}
