@@ -23,4 +23,11 @@
     </div>
     <button type="submit" class="btn btn-primary">Отправить</button>
   </form>
+
+  <h2>Контакты:</h2>
+  <ul>
+    {% for contact in contacts %}
+      <li>{{ contact.name }}: {{ contact.value }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
