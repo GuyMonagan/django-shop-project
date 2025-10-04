@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("catalog.urls")),  # подключаем наше приложение
+    path('', include('catalog.urls')),          # главная
+    path('contacts/', include('contacts.urls')) # контакты
 ]

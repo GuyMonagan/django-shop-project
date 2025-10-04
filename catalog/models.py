@@ -27,15 +27,3 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ContactData(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Название контакта")
-    value = models.CharField(max_length=255, verbose_name="Значение")
-
-    class Meta:
-        verbose_name = "Контакт"
-        verbose_name_plural = "Контакты"
-
-    def __str__(self):
-        return f"{self.name}: {self.value}"
