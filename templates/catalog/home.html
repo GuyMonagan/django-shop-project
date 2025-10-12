@@ -9,9 +9,24 @@
 <h2>Последние товары:</h2>
 <ul>
   {% for product in latest_products %}
-    <li>{{ product.name }} – {{ product.price }} ₽</li>
-  {% empty %}
-    <li>Нет доступных товаров.</li>
+    <div class="card mb-4 p-3 border rounded">
+      <h2>
+        <a href="{% url 'product_detail' product.pk %}">
+          {{ product.name }}
+        </a>
+      </h2>
+
+      {% if product.image %}
+        <a href="{% url 'product_detail' product.pk %}">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+        </a>
+      {% endif %}
+
+      <p>{{ product.description|truncatechars:100 }}</p>
+
+      <p><a href="{% url 'product_detail' product.pk %}">Подробнее →</a></p>
+    </div>
   {% endfor %}
+
 </ul>
 {% endblock %}
