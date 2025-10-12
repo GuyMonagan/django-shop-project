@@ -1,23 +1,17 @@
-from django.shortcuts import render
-from .forms import ContactForm
-from .models import ContactData
+from django.views.generic.edit import FormView
+from contacts.forms import ContactForm
+from contacts.models import ContactData
 
-def contacts_view(request):
-    success = False
+class ContactView(FormView):
+    template_name = "contacts/contacts.html"
+    form_class = ContactForm
+    success_url = "/contacts/"
 
-    if request.method == "POST":
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            print("Данные формы:", form.cleaned_data)
-            success = True
-            form = ContactForm()
-    else:
-        form = ContactForm()
+    def form_valid(self, form):
+        print("Данные формы:", form.cleaned_data)
+        return super().form_valid(form)
 
-    contacts = ContactData.objects.all()
-
-    return render(request, "contacts/contacts.html", {
-        "form": form,
-        "success": success,
-        "contacts": contacts,
-    })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contacts"] = ContactData.objects.all()
+        return context

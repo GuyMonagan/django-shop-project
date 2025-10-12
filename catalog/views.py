@@ -1,11 +1,15 @@
-from django.shortcuts import render, get_object_or_404
 from .models import Product
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 
-def home(request):
-    latest_products = Product.objects.order_by('-created_at')[:5]
-    return render(request, 'catalog/home.html', {'latest_products': latest_products})
+class HomeView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'latest_products'
+    queryset = Product.objects.order_by('-created_at')[:5]
 
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'catalog/product_detail.html', {'product': product})
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
