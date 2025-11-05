@@ -1,0 +1,13 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+<h1>Удалить продукт</h1>
+
+<p>Ты точно хочешь удалить <strong>{{ object.name }}</strong>? Это нельзя будет отменить.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'catalog:product_detail' object.pk %}">Отмена</a>
+</form>
+{% endblock %}
