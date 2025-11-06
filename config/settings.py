@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contacts.apps.ContactsConfig',
     'catalog',
     'blog.apps.BlogConfig',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,5 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
 ADMIN_EMAIL = 'werevalkury@gmail.com'
+
+AUTH_USER_MODEL = 'users.CustomUser'
