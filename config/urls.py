@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('catalog.urls')),          # главная
     path('contacts/', include('contacts.urls')), # контакты
     path('blog/', include('blog.urls')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
