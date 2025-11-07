@@ -3,7 +3,9 @@
 {% block content %}
 <h1>Список продуктов</h1>
 
-<a href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+{% if user.is_authenticated %}
+  <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Добавить продукт</a>
+{% endif %}
 
 <ul>
     {% for product in products %}
