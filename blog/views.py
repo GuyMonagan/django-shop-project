@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import BlogPost
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class BlogListView(ListView):
@@ -37,14 +38,14 @@ class BlogDetailView(DetailView):
         return obj
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/blog_form.html'
     success_url = reverse_lazy('blog_list')
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/blog_form.html'
@@ -53,7 +54,7 @@ class BlogUpdateView(UpdateView):
         return reverse('blog_detail', kwargs={'pk': self.object.pk})
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost
     template_name = 'blog/blog_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
