@@ -142,3 +142,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
 ADMIN_EMAIL = 'werevalkury@gmail.com'
+
+LOGOUT_REDIRECT_URL = '/'
+
