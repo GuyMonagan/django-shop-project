@@ -6,7 +6,9 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import CustomUserUpdateForm
+from django.contrib.auth import login
 from .forms import ProfileEditForm
+
 
 class RegisterView(CreateView):
     model = CustomUser
@@ -16,6 +18,11 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+
+        # логиним пользователя
+        login(self.request, self.object)
+
+        # отправляем письмо
         send_mail(
             'Добро пожаловать!',
             f'Привет, {self.object.email}! Вы успешно зарегистрировались.',
