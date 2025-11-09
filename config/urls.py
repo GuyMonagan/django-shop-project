@@ -26,8 +26,6 @@ urlpatterns = [
     path('contacts/', include('contacts.urls')), # контакты
     path('blog/', include('blog.urls')),
     path('users/', include('users.urls')),
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
 if settings.DEBUG:

@@ -1,9 +1,23 @@
 {% extends "catalog/base.html" %}
+{% load static %}
 
 {% block title %}Редактирование профиля{% endblock %}
 
 {% block content %}
   <h2>Редактировать профиль</h2>
+
+  {% if user.avatar %}
+    <div class="mb-3">
+      <p>Текущий аватар:</p>
+      <img src="{{ user.avatar.url }}" alt="аватар" class="rounded-circle" style="width: 96px; height: 96px; object-fit: cover;">
+    </div>
+  {% else %}
+    <div class="mb-3">
+      <p>У вас пока нет аватара:</p>
+      <img src="{% static 'default_avatar.png' %}" alt="аватар" class="rounded-circle" style="width: 96px; height: 96px; object-fit: cover;">
+    </div>
+  {% endif %}
+
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
