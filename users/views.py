@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import CustomUserUpdateForm
 from django.contrib.auth import login
+
+from django.contrib.auth import logout
+from django.conf import settings
+
 from .forms import ProfileEditForm
 
 
@@ -43,3 +47,23 @@ def profile_edit(request):
         form = CustomUserUpdateForm(instance=request.user)
 
     return render(request, 'users/profile_edit.html', {'form': form})
+
+
+def rage_quit(request):
+    if request.method == 'POST':
+        user_email = request.user.email
+        username = request.user.username
+
+        # отправка письма
+        if user_email:
+            send_mail(
+                subject='Ну и ладно, и жопалуйста.',
+                message=f'{username}, вы удалили аккаунт. Мы надеемся, вы найдёте свой лес.',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user_email],
+                fail_silently=True  # не падаем, если почта не работает
+            )
+
+        request.user.delete()
+        logout(request)
+        return redirect('/')

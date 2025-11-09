@@ -107,3 +107,31 @@ poetry run python manage.py load_test_data
 ## Лицензия
 
 Учебный проект. Используется в рамках курса Skypro Python-разработчик
+
+## SMTP
+
+Для отправки писем используйте настройки из .env.
+При отсутствии SMTP-конфига для вывода писем в консоль в ручную заменить settings.py
+
+```
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.your-email-provider.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'False'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your-email@example.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'your-email-password')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+```
+
+на
+
+```
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'debug@example.com'
+```
