@@ -139,9 +139,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@example.com'
-ADMIN_EMAIL = 'werevalkury@gmail.com'
+DEFAULT_FROM_EMAIL = 'debug@example.com'
+
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.your-email-provider.com')
+#EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+#EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+#EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False') == 'True'
+#EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'your-email@example.com')
+#EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'your-email-password')
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGOUT_REDIRECT_URL = '/'
 
