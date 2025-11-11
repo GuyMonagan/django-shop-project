@@ -30,7 +30,7 @@ class RegisterView(CreateView):
         send_mail(
             'Добро пожаловать!',
             f'Привет, {self.object.email}! Вы успешно зарегистрировались.',
-            'noreply@example.com',
+            settings.EMAIL_HOST_USER,
             [self.object.email],
             fail_silently=True,
         )
