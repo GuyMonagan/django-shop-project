@@ -7,15 +7,34 @@
   <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Добавить продукт</a>
 {% endif %}
 
-<ul>
-    {% for product in products %}
-        <li>
-            <a href="{% url 'catalog:product_detail' product.pk %}">
-                {{ product.name }}
-            </a> — {{ product.price }}₽
-        </li>
-    {% empty %}
-        <li>Пока продуктов нет.</li>
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="alert alert-{{ message.tags }}">{{ message }}</li>
     {% endfor %}
+  </ul>
+{% endif %}
+
+<ul>
+  {% for product in products %}
+    <li>
+      {{ product.name }} — {{ product.price }}₽
+
+      {% if can_unpublish %}
+        {% if product.is_published %}
+          <form method="post" action="{% url 'catalog:product_unpublish' product.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-warning">Снять с публикации</button>
+          </form>
+        {% else %}
+          <form method="post" action="{% url 'catalog:product_publish' product.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Опубликовать снова</button>
+          </form>
+        {% endif %}
+      {% endif %}
+    </li>
+  {% endfor %}
 </ul>
+
 {% endblock %}

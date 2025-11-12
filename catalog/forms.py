@@ -22,14 +22,14 @@ FORBIDDEN_WORDS = [
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = '__all__'  # Если наставник не попросит выбрать конкретные
+        fields = ['name', 'description', 'image', 'category', 'price', 'is_published']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs.update({'class': 'form-control'})  # простенькая стилизация
+            field.widget.attrs.update({'class': 'form-control'})
 
-        # Чекбокс на всякий случай — если у тебя будет булевое поле потом
+        # Чекбокс на всякий случай
         if 'some_boolean_field' in self.fields:
             self.fields['some_boolean_field'].widget.attrs.update({'class': 'form-check-input'})
 
