@@ -11,7 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['avatar', 'phone', 'country']
+        fields = ['username', 'avatar', 'phone', 'country']
         widgets = {
             'phone': forms.TextInput(attrs={'placeholder': 'Телефон'}),
             'country': forms.TextInput(attrs={'placeholder': 'Страна'}),

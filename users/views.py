@@ -42,7 +42,7 @@ def profile_edit(request):
         form = CustomUserUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile_edit')  # можно редиректить на что угодно
+            return redirect('users:profile_edit')
     else:
         form = CustomUserUpdateForm(instance=request.user)
 
