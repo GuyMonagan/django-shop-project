@@ -1,20 +1,32 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
-from catalog.models import Product
-from django.contrib.contenttypes.models import ContentType
 
 
 class Command(BaseCommand):
-    help = "Создаёт группы и раздаёт права"
+    help = "Создаёт группы с правами"
 
     def handle(self, *args, **kwargs):
-        mod_group, created = Group.objects.get_or_create(name="Модератор продуктов")
-        content_type = ContentType.objects.get_for_model(Product)
+        # Группа модераторов продуктов
+        moderators_group, created = Group.objects.get_or_create(name='Модератор продуктов')
+        if created:
+            self.stdout.write('Группа "Модератор продуктов" создана.')
+        else:
+            self.stdout.write('Группа "Модератор продуктов" уже существует.')
 
-        perms = [
-            Permission.objects.get(codename='delete_product', content_type=content_type),
-            Permission.objects.get(codename='can_unpublish_product', content_type=content_type),
-        ]
+        # Права для модераторов продуктов
+        delete_product = Permission.objects.get(codename='delete_product')
+        can_unpublish = Permission.objects.get(codename='can_unpublish_product')
+        moderators_group.permissions.set([delete_product, can_unpublish])
 
-        mod_group.permissions.set(perms)
-        self.stdout.write(self.style.SUCCESS('Группа "Модератор продуктов" создана и настроена.'))
+        # Группа контент-менеджеров
+        content_group, created = Group.objects.get_or_create(name='Контент-менеджер')
+        if created:
+            self.stdout.write('Группа "Контент-менеджер" создана.')
+        else:
+            self.stdout.write('Группа "Контент-менеджер" уже существует.')
+
+        # Права для блога (добавь нужные, если кастомные есть)
+        blog_permissions = Permission.objects.filter(content_type__app_label='blog')
+        content_group.permissions.set(blog_permissions)
+
+        self.stdout.write(self.style.SUCCESS('Группы настроены!'))

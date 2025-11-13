@@ -1,9 +1,10 @@
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import BlogPost
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
 class BlogListView(ListView):
@@ -20,6 +21,7 @@ class BlogDetailView(DetailView):
     model = BlogPost
     template_name = 'blog/blog_detail.html'
     context_object_name = 'post'
+
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -38,24 +40,47 @@ class BlogDetailView(DetailView):
         return obj
 
 
-class BlogCreateView(LoginRequiredMixin, CreateView):
+class BlogCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = BlogPost
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/blog_form.html'
     success_url = reverse_lazy('blog_list')
 
 
-class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    def test_func(self):
+        return self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+    def handle_no_permission(self):
+        raise PermissionDenied("У вас нет доступа к этому действию.")
+
+
+class BlogUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = BlogPost
     fields = ['title', 'content', 'preview', 'is_published']
     template_name = 'blog/blog_form.html'
+
+
+    def test_func(self):
+        return self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+
+    def handle_no_permission(self):
+        raise PermissionDenied("У вас нет доступа для редактирования поста.")
+
 
     def get_success_url(self):
         return reverse('blog_detail', kwargs={'pk': self.object.pk})
 
 
-class BlogDeleteView(LoginRequiredMixin, DeleteView):
+class BlogDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = BlogPost
     template_name = 'blog/blog_confirm_delete.html'
     success_url = reverse_lazy('blog_list')
 
+
+    def test_func(self):
+        return self.request.user.groups.filter(name="Контент-менеджер").exists()
+
+
+def handle_no_permission(self):
+    raise PermissionDenied("У вас нет доступа к этому действию.")
