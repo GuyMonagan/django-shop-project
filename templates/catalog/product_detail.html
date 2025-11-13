@@ -11,10 +11,10 @@
 <p><strong>Описание:</strong> {{ product.description }}</p>
 <p><strong>Цена:</strong> {{ product.price }}₽</p>
 
-{% if user.is_authenticated %}
+{% if can_edit %}
   <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-secondary">Редактировать</a>
   <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
 {% endif %}
 
-<a href="{% url 'catalog:product_list' %}">Назад</a>
+<a href="{% url 'catalog:product_list' %}">К списку продуктов</a>
 {% endblock %}
