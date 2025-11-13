@@ -18,7 +18,9 @@
 <ul>
   {% for product in products %}
     <li>
-      {{ product.name }} — {{ product.price }}₽
+      <a href="{% url 'catalog:product_detail' product.pk %}">
+        {{ product.name }}
+      </a> — {{ product.price }}₽
 
       {% if can_unpublish %}
         {% if product.is_published %}
