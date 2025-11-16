@@ -9,6 +9,23 @@ from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from .services import get_products_by_category
+from .models import Category
+from django.core.cache import cache
+
+
+class CategoryProductListView(ListView):
+    template_name = 'catalog/products_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, pk=self.kwargs['category_id'])
+        return get_products_by_category(self.category.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = self.category
+        return context
 
 
 class HomeView(ListView):
@@ -42,6 +59,20 @@ class ProductListView(ListView):
     model = Product
     template_name = 'catalog/product_list.html'
     context_object_name = 'products'
+
+
+    def get_queryset(self):
+        user = self.request.user
+        is_super = user.is_superuser
+
+        cache_key = 'product_list_all' if is_super else 'product_list_published'
+        products = cache.get(cache_key)
+
+        if products is None:
+            products = Product.objects.all() if is_super else Product.objects.filter(is_published=True)
+            cache.set(cache_key, products, timeout=60)
+
+        return products
 
 
     def get_context_data(self, **kwargs):
