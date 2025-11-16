@@ -7,6 +7,9 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic import View
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+
 
 class HomeView(ListView):
     model = Product
@@ -15,6 +18,7 @@ class HomeView(ListView):
     queryset = Product.objects.filter(is_published=True).order_by('-created_at')[:5]
 
 
+@method_decorator(cache_page(60), name='dispatch')
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
